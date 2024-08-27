@@ -7,7 +7,10 @@ import { Link } from 'expo-router';
 
 export default function TabOneScreen() {
   return (
+    
     <View style={styles.page}>
+      <StatusBar barStyle="dark-content"/>
+
       <FlatList 
         data={tweets} 
         renderItem={({ item }) => <Tweet tweet={item} />} 

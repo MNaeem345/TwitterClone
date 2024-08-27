@@ -49,12 +49,13 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={colorScheme === 'light' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false, title:'back' }} />
+        <Stack.Screen name="(drawer)" options={{ headerShown: false, title: 'back' }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false, title: 'back' }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="tweet/[id]" options={{title:'Tweet'}}/>
-        <Stack.Screen name="new-tweet" options={{title:'New Tweet', headerShown:false}}/>
+        <Stack.Screen name="tweet/[id]" options={{ title: 'Tweet' }} />
+        <Stack.Screen name="new-tweet" options={{ title: 'New Tweet', headerShown: false }} />
 
       </Stack>
     </ThemeProvider>
