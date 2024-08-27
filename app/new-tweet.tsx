@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, StyleSheet, Text, Image, TextInput, Pressable, SafeAreaView, StatusBar } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
 const user = {
     id: 'u1',
@@ -12,11 +12,12 @@ const user = {
 
 export default function NewTweet() {
     const [text, setText] = useState("");
-
-
+    const router = useRouter()
 
     const onTweetPress = () => {
         console.warn('Posting the tweet:', text)
+        setText('');
+        router.back()
     }
 
 
