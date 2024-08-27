@@ -1,6 +1,6 @@
 import { StyleSheet, View, FlatList, Pressable, SafeAreaView, StatusBar } from 'react-native';
 
-import tweets from '../../assets/data/tweets';
+import tweets from '../../../assets/data/tweets';
 import Tweet from '@/components/Tweet';
 import {Entypo} from '@expo/vector-icons';
 import { Link } from 'expo-router';
