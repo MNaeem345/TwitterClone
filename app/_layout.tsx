@@ -7,6 +7,9 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+
+const client = new QueryClient();
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -49,7 +52,9 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'light' ? DarkTheme : DefaultTheme}>
+    <>
+    <QueryClientProvider client={client}>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(drawer)" options={{ headerShown: false, title: 'back' }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
@@ -58,5 +63,7 @@ function RootLayoutNav() {
 
       </Stack>
     </ThemeProvider>
+    </QueryClientProvider>
+    </>
   );
 }
