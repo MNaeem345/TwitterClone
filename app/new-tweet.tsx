@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { View, StyleSheet, Text, Image, TextInput, Pressable, SafeAreaView, StatusBar } from 'react-native';
+import { View, StyleSheet, Text, Image, TextInput, Pressable, SafeAreaView, StatusBar, ActivityIndicator } from 'react-native';
 import { Link, useRouter } from 'expo-router';
+import { useMutation , useQueryClient} from '@tanstack/react-query';
+import { createTweet } from '@/lib/api/tweets';
+
+
 
 const user = {
     id: 'u1',
@@ -12,12 +16,30 @@ const user = {
 
 export default function NewTweet() {
     const [text, setText] = useState("");
-    const router = useRouter()
+    const router = useRouter();
 
-    const onTweetPress = () => {
-        console.warn('Posting the tweet:', text)
-        setText('');
-        router.back()
+    const queryClient = useQueryClient()
+
+    const {mutateAsync, isError, isLoading, error, isSuccess} = useMutation({
+        mutationFn: createTweet,
+        onSuccess:(data)=>{
+            queryClient.setQueriesData(['tweets'], (existingTweets) => {
+                return [data, ...existingTweets]
+            })
+        },
+    })
+
+    const onTweetPress = async () => {
+        try{
+            await mutateAsync({content:text});
+
+            setText('');
+            router.back()
+        }catch(e){
+            console.log("Error:", e.message)
+        }
+
+       
     }
 
 
@@ -29,6 +51,7 @@ export default function NewTweet() {
 
                 <View style={styles.buttonContainer}>
                     <Link href='../' style={{ fontSize: 18 }}>Cancel</Link>
+                    {isLoading && <ActivityIndicator/>}
                     <Pressable onPress={onTweetPress} style={styles.button}>
                         <Text style={styles.buttonText}>Tweet</Text>
                     </Pressable>
@@ -46,6 +69,8 @@ export default function NewTweet() {
                         numberOfLines={5}
                     />
                 </View>
+
+                {error && <Text>Error:{error.message}</Text>}
             </View>
         </SafeAreaView>
     )
