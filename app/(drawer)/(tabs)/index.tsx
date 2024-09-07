@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import Tweet from '@/components/Tweet';
 import {Entypo} from '@expo/vector-icons';
 import { Link } from 'expo-router';
-import { listTweets } from '@/lib/api/tweets';
+import { useTweetApi } from '@/lib/api/tweets';
 import { useQuery } from '@tanstack/react-query';
 
 export default function TabOneScreen() {
+
+  const {listTweets} = useTweetApi()
   const {data, isLoading, error} = useQuery({
     queryKey: ['tweets'], 
     queryFn: listTweets,

@@ -9,6 +9,7 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/components/useColorScheme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AuthContextProvider from '../context/AuthContext';
+import TweetsApiContextProvider from '@/lib/api/tweets';
 
 const client = new QueryClient();
 
@@ -55,6 +56,7 @@ function RootLayoutNav() {
   return (
     <>
       <AuthContextProvider>
+        <TweetsApiContextProvider>
         <QueryClientProvider client={client}>
           <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
             <Stack>
@@ -68,6 +70,7 @@ function RootLayoutNav() {
             </Stack>
           </ThemeProvider>
         </QueryClientProvider>
+        </TweetsApiContextProvider>
       </AuthContextProvider>
     </>
   );
