@@ -7,7 +7,8 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import AuthContextProvider from '../context/AuthContext';
 
 const client = new QueryClient();
 
@@ -53,19 +54,21 @@ function RootLayoutNav() {
 
   return (
     <>
-    <QueryClientProvider client={client}>
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(drawer)" options={{ headerShown: false, title: 'back' }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="tweet/[id]" options={{ title: 'Tweet' }} />
-        <Stack.Screen name="new-tweet" options={{ title: 'New Tweet', headerShown: false }} />
-        <Stack.Screen name="(auth)/signIn" options={{headerShown:false, title:'Back'}}/>
-        <Stack.Screen name="(auth)/authenticate" options={{title:""}}/>
+      <AuthContextProvider>
+        <QueryClientProvider client={client}>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <Stack>
+              <Stack.Screen name="(drawer)" options={{ headerShown: false, title: 'back' }} />
+              <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+              <Stack.Screen name="tweet/[id]" options={{ title: 'Tweet' }} />
+              <Stack.Screen name="new-tweet" options={{ title: 'New Tweet', headerShown: false }} />
+              <Stack.Screen name="(auth)/signIn" options={{ headerShown: false, title: 'Back' }} />
+              <Stack.Screen name="(auth)/authenticate" options={{ title: "" }} />
 
-      </Stack>
-    </ThemeProvider>
-    </QueryClientProvider>
+            </Stack>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </AuthContextProvider>
     </>
   );
 }
