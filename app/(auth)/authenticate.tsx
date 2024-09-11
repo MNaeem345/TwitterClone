@@ -16,8 +16,7 @@ const Authenticate = () => {
         }
         try{
             const res = await authenticate({ email, emailToken: code })
-            console.log(res)
-            console.warn(res)
+   
             await updateAuthToken(res.authToken);
         }catch(e){
             Alert.alert("Error", "Email code doesn't match")

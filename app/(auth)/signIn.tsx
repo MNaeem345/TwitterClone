@@ -2,15 +2,18 @@ import { View, Text, TextInput, Pressable, StyleSheet, Alert } from 'react-nativ
 import React, { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { login } from '@/lib/api/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
     const router = useRouter();
-
-
+    
 
     const onSignIn = async () =>{
-        console.warn('Sign In:', email);
+        await AsyncStorage.setItem('email', email)
+        const checkemail = await AsyncStorage.getItem('email')
+        
         try{
             await login({email});
             router.push({pathname: '/authenticate', params:{ email }})

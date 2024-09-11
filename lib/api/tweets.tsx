@@ -6,10 +6,28 @@ const TweetsApiContext = createContext({});
 
 const TweetsApiContextProvider = ({ children }: PropsWithChildren) => {
   const { authToken } = useAuth();
-
+ 
   const listTweets = async () => {
-  
+    if(!authToken){
+      return
+    }
     const res = await fetch(`${API_URL}/tweet`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    if (res.status !== 200) {
+      throw new Error("Error fetching tweets")
+    }
+    return await res.json();
+
+  };
+
+  const listUserTweets = async (userId:string) => {
+    if(!authToken){
+      return
+    }
+    const res = await fetch(`${API_URL}/tweet/userTweets/7`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
@@ -23,6 +41,7 @@ const TweetsApiContextProvider = ({ children }: PropsWithChildren) => {
   };
 
   const getTweet = async (id: string) => {
+    
     const res = await fetch(`${API_URL}/tweet/${id}`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
@@ -31,7 +50,6 @@ const TweetsApiContextProvider = ({ children }: PropsWithChildren) => {
     if (res.status !== 200) {
       throw new Error("Error fetching tweet")
     }
-
     return await res.json();
   };
 
@@ -55,11 +73,13 @@ const TweetsApiContextProvider = ({ children }: PropsWithChildren) => {
     listTweets,
     getTweet,
     createTweet,
+    listUserTweets,
     }}>
     {children}
   </TweetsApiContext.Provider>
   )
 };
+
 export default TweetsApiContextProvider;
 
 export const useTweetApi = () => useContext(TweetsApiContext);

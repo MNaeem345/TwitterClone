@@ -10,7 +10,7 @@ const AuthContextProvider = ({children}:PropsWithChildren) =>{
     const segments = useSegments();
     const router = useRouter();
 
-    console.warn(segments)
+    
 
     console.log("Auth token: ", authToken)
 

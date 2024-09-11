@@ -3,6 +3,8 @@ import { TweetType } from '../types';
 import { Entypo } from '@expo/vector-icons';
 import IconButton from './IconButton';
 import {Link} from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 type TweetProps = {
@@ -10,18 +12,64 @@ type TweetProps = {
 }
 
 
-const Tweet = ({ tweet }: TweetProps) => {
-
+const UserTweets = ({ tweet }: TweetProps) => {
+    // const saveId = async () =>{
+    //     try {
+    //         const getEmail = await AsyncStorage.getItem('email');
+    //         const checkEmail = tweet.user.email;
     
+    //         // Check if userId is already stored
+    //         const storedUserId = await AsyncStorage.getItem('userId');
+    
+    //         // Proceed only if userId is not already stored and emails match
+    //         if (!storedUserId && getEmail === checkEmail) {
+    //             console.log("Storing user ID:", tweet.user.id);
+    //             await AsyncStorage.setItem("userId", tweet.user.id.toString());
+    //             const id = await AsyncStorage.getItem('userId');
+    //             console.log(id)
+    //             return
+    //         } else if (storedUserId) {
+               
+    //             return
+    //         } else {
+    //             console.log("Emails do not match, or userId is already stored.");
+    //         }
+    //     } catch (error) {
+    //         console.error("Error saving ID:", error);
+    //     }
+    //     console.log(await AsyncStorage.getItem('userId'))
+    // };
+    const getUser = async () => {
+        try {
+          const userData = await AsyncStorage.getItem("userId")
+          
+        } catch (error) {
+         console.log(error); 
+        }
+      };
+
+      
+    
+   
+    getUser()
+
     return (
         <Link href={`/tweet/${tweet.id}`} asChild>
         <Pressable style={styles.container}>
            
-        
-            <Image
-                src={tweet?.user?.image}
-                style={styles.userImage}
-            />
+
+        {tweet?.user?.image ? (
+                    <Image
+                        source={{ uri: tweet.user.image }}
+                        style={styles.userImage}
+                    />
+                ) : (
+                    <Image
+                        source={{ uri: 'https://default-image-url.com/default.png' }} // Provide a default image URL
+                        style={styles.userImage}
+                    />
+                )}
+
             <View style={styles.mainContainer}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={styles.name}>{tweet?.user?.name}</Text>
@@ -102,4 +150,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Tweet;
+export default UserTweets;

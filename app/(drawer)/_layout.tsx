@@ -1,6 +1,7 @@
 import { withLayoutContext } from "expo-router";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { StatusBar } from 'react-native'
+import { ActivityIndicator, StatusBar } from 'react-native'
+import { useAuth } from "@/context/AuthContext";
 
 const DrawerNavigator = createDrawerNavigator().Navigator;
 
@@ -15,6 +16,11 @@ export const unstable_settings = {
 {/**Video Timestamp 3:50:00 */}
 
 export default function DrawerLayour() {
+    const {authToken} = useAuth();
+
+    if(!authToken){
+        return <ActivityIndicator/>
+    }
     return (
     <>
     
