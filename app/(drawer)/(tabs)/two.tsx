@@ -16,7 +16,7 @@ export default function TabTwoScreen() {
 
   const {listUserTweets} = useTweetApi()
   const {data, isLoading, error} = useQuery({
-    queryKey: ['tweets'], 
+    queryKey: ['userTweets'], 
     queryFn: listUserTweets,
   })
   const checkEmail = async () =>{
@@ -25,6 +25,8 @@ export default function TabTwoScreen() {
    
   }
   checkEmail()
+  // const sortedTweets = [...userTweets].reverse();
+
 
   // const [tweets, setTweets] = useState([]);
 
@@ -48,9 +50,8 @@ export default function TabTwoScreen() {
   const {authToken} = useAuth();
 
 
+console.log(data)
 
-
-  console.log(data.user)
 
 
   return (
@@ -59,8 +60,8 @@ export default function TabTwoScreen() {
   
 
       <FlatList 
-        data={data} 
-        renderItem={({ item }) => <UserTweets tweet={item} />} 
+        data={data.reverse()} 
+        renderItem={({ item }) => <UserTweets userTweets={item} />} 
       
       />
    

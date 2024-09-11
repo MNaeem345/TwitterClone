@@ -8,11 +8,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 type TweetProps = {
-    tweet: TweetType;
+    userTweets: TweetType;
 }
 
 
-const UserTweets = ({ tweet }: TweetProps) => {
+const UserTweets = ({ userTweets }: TweetProps) => {
     // const saveId = async () =>{
     //     try {
     //         const getEmail = await AsyncStorage.getItem('email');
@@ -47,20 +47,20 @@ const UserTweets = ({ tweet }: TweetProps) => {
          console.log(error); 
         }
       };
-
+      
       
     
    
     getUser()
 
     return (
-        <Link href={`/tweet/${tweet.id}`} asChild>
+        <Link href={`/tweet/${userTweets.id}`} asChild>
         <Pressable style={styles.container}>
            
 
-        {tweet?.user?.image ? (
+        {userTweets?.user?.image ? (
                     <Image
-                        source={{ uri: tweet.user.image }}
+                        source={{ uri: userTweets.user.image }}
                         style={styles.userImage}
                     />
                 ) : (
@@ -72,8 +72,8 @@ const UserTweets = ({ tweet }: TweetProps) => {
 
             <View style={styles.mainContainer}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={styles.name}>{tweet?.user?.name}</Text>
-                    <Text style={styles.username}>{tweet?.user?.username} ·2h</Text>
+                    <Text style={styles.name}>{userTweets?.user?.name}</Text>
+                    <Text style={styles.username}>{userTweets?.user?.username} ·2h</Text>
                     <Entypo
                         name="dots-three-horizontal"
                         size={16}
@@ -82,15 +82,15 @@ const UserTweets = ({ tweet }: TweetProps) => {
                     />
                 </View>
 
-                <Text style={styles.content}>{tweet?.content}</Text>
+                <Text style={styles.content}>{userTweets?.content}</Text>
 
-                {tweet.image && <Image src={tweet?.image} style={styles.image} />}
+                {userTweets.image && <Image src={userTweets?.image} style={styles.image} />}
 
                 <View style={styles.footer}>
-                    <IconButton icon="comment" text={tweet?.numberOfComments}/>
-                    <IconButton icon="retweet" text={tweet?.numberOfRetweets}/>
-                    <IconButton icon="heart" text={tweet?.numberOfLikes}/>
-                    <IconButton icon="chart" text={tweet?.imporessions || 0}/>
+                    <IconButton icon="comment" text={userTweets?.numberOfComments}/>
+                    <IconButton icon="retweet" text={userTweets?.numberOfRetweets}/>
+                    <IconButton icon="heart" text={userTweets?.numberOfLikes}/>
+                    <IconButton icon="chart" text={userTweets?.imporessions || 0}/>
                     <IconButton icon="share-apple"/>
 
 

@@ -23,12 +23,13 @@ export default function NewTweet() {
 
     const {mutateAsync, isError, isLoading, error, isSuccess} = useMutation({
         mutationFn: createTweet,
-        onSuccess:(data)=>{
-            queryClient.setQueriesData(['tweets'], (existingTweets) => {
-                return [data, ...existingTweets]
-            })
+        onSuccess: (newTweet) => {
+            queryClient.setQueryData(['tweets','userTweets'], (existingTweets) => {
+                // Check if there are existing tweets, if not return the new tweet as an array
+                return existingTweets ? [newTweet, ...existingTweets] : [newTweet];
+            });
         },
-    })
+    });
 
     const onTweetPress = async () => {
         try{
