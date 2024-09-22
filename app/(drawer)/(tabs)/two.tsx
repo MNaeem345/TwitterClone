@@ -1,16 +1,45 @@
-import { StyleSheet, View, FlatList, Pressable, SafeAreaView, StatusBar, ActivityIndicator, Text } from 'react-native';
+import { StyleSheet, View, FlatList, Pressable, SafeAreaView, StatusBar, ActivityIndicator, Text,Image } from 'react-native';
 import { useEffect, useState } from 'react';
 //import tweets from '../../../assets/data/tweets';
 import UserTweets from '@/components/userTweets';
+import { TweetType } from '../../../types'
 import {Entypo} from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { useTweetApi } from '@/lib/api/tweets';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
+type TweetProps = {
+  userTweets: TweetType;
+}
 
+const renderProfileInfo = ({ userTweets }: TweetProps) => {
+    return(
+      
+      <View>
+        {userTweets?.user?.image ? (
+                    <Image
+                    source={{ uri: userTweets.user.image }}
+                        style={styles.userImage}
+                    />
+                ) : (
+                    <MaterialCommunityIcons 
+                    name="account-circle" 
+                    size={40} 
+                    color="grey"
+                    style={styles.accImage}
+                   />
+                    
+                )}
+          <Text>
+            {userTweets?.user?.name}
+          </Text>
 
+      </View>
+    )
+}
 
 export default function TabTwoScreen() {
 
@@ -21,7 +50,6 @@ export default function TabTwoScreen() {
   })
   const checkEmail = async () =>{
    const check =  await AsyncStorage.getItem('email')
-   console.log("This is from tab 2",check)
    
   }
   checkEmail()
@@ -50,17 +78,39 @@ export default function TabTwoScreen() {
   const {authToken} = useAuth();
 
 
-console.log(data)
-
-
 
   return (
     
     <View style={styles.page}>
+      <View style={styles.header}>
+
+      </View>
+      <View style={styles.profileHeader}>
+      {data[0]?.user?.image ? (
+                    <Image
+                    source={{ uri: listUserTweets.user.image }}
+                        style={styles.userImage}
+                    />
+                ) : (
+                    <MaterialCommunityIcons 
+                    name="account-circle" 
+                    size={80} 
+                    color="grey"
+                    style={styles.profileImage}
+                   />
+                    
+                )}
+        <Text style={styles.profileName}>
+          {data[0]?.user?.name}
+        </Text>
+        <Text style={styles.profileUser}>
+          @{data[0]?.user?.username}
+        </Text>
+        </View>
   
 
       <FlatList 
-        data={data.reverse()} 
+        data={data ? [...data].reverse() : []} 
         renderItem={({ item }) => <UserTweets userTweets={item} />} 
       
       />
@@ -78,9 +128,13 @@ console.log(data)
 }
 
 const styles = StyleSheet.create({
+  header:{
+    marginTop:50
+  },
   page: {
     flex: 1,
     backgroundColor:'white',
+    
   },
   floatingButton:{
     backgroundColor:'#1C9BF0',
@@ -100,6 +154,34 @@ const styles = StyleSheet.create({
     shadowOpacity:0.25,
     shadowRadius:3.84,
     elevation:5,
-  }
+  },
+  profileImage:{
+    marginRight: 5,
+    marginLeft: 15,
+    borderRadius:50,
+    borderColor:'black',
+   
+    
+    bottom:0
+    
+},
+userImage: {
+  width: 50,
+  height: 50,
+  borderRadius: 50
+},
+profileName:{
+  marginTop:10,
+  marginLeft:15,
+  fontSize:25,
+  fontWeight:'bold'
+},
+profileUser:{
+  marginTop:6,
+  marginLeft:15,
+  marginBottom:15,
+  color: 'grey',
+},
+
 
 });

@@ -44,7 +44,7 @@ export default function TabOneScreen() {
       <StatusBar barStyle="dark-content"/>
 
       <FlatList 
-        data={data.reverse()} 
+        data={data ? [...data].reverse() : []} 
         renderItem={({ item }) => <Tweet tweet={item} />} 
       
       />

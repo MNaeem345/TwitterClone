@@ -24,10 +24,18 @@ export default function NewTweet() {
     const {mutateAsync, isError, isLoading, error, isSuccess} = useMutation({
         mutationFn: createTweet,
         onSuccess: (newTweet) => {
-            queryClient.setQueryData(['tweets','userTweets'], (existingTweets) => {
-                // Check if there are existing tweets, if not return the new tweet as an array
-                return existingTweets ? [newTweet, ...existingTweets] : [newTweet];
+            // Update the cached 'tweets' data to include the new tweet at the top
+            queryClient.setQueryData(['tweets'], (existingTweets = []) => {
+                return [newTweet, ...existingTweets]; // Prepend the new tweet
             });
+
+            // If there's a separate query for 'userTweets', update that too
+            queryClient.setQueryData(['userTweets'], (existingUserTweets = []) => {
+                return [newTweet, ...existingUserTweets];
+            });
+
+            // Optionally refetch tweets to ensure the UI is in sync with the server
+            queryClient.invalidateQueries(['tweets']);
         },
     });
 

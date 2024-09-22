@@ -4,6 +4,7 @@ import { Entypo } from '@expo/vector-icons';
 import IconButton from './IconButton';
 import {Link} from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 
 
@@ -57,23 +58,26 @@ const UserTweets = ({ userTweets }: TweetProps) => {
         <Link href={`/tweet/${userTweets.id}`} asChild>
         <Pressable style={styles.container}>
            
-
         {userTweets?.user?.image ? (
                     <Image
-                        source={{ uri: userTweets.user.image }}
+                    source={{ uri: userTweets.user.image }}
                         style={styles.userImage}
                     />
                 ) : (
-                    <Image
-                        source={{ uri: 'https://default-image-url.com/default.png' }} // Provide a default image URL
-                        style={styles.userImage}
-                    />
+                    <MaterialCommunityIcons 
+                    name="account-circle" 
+                    size={40} 
+                    color="grey"
+                    style={styles.accImage}
+                   />
+                    
                 )}
+
 
             <View style={styles.mainContainer}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={styles.name}>{userTweets?.user?.name}</Text>
-                    <Text style={styles.username}>{userTweets?.user?.username} ·2h</Text>
+                    <Text style={styles.username}>@{userTweets?.user?.username} ·2h</Text>
                     <Entypo
                         name="dots-three-horizontal"
                         size={16}
@@ -118,6 +122,12 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 50
     },
+    accImage:{
+        marginRight: 5,
+        marginLeft: 5,
+        borderRadius:50,
+        borderColor:'black'
+    },
     mainContainer: {
         marginLeft: 5,
         flex: 1,
@@ -126,15 +136,18 @@ const styles = StyleSheet.create({
     },
     name: {
         fontWeight: '600',
+        fontSize:15
 
     },
     username: {
         color: 'grey',
-        marginLeft: 5,
+        marginLeft: 10,
+        fontSize:14
     },
     content: {
         lineHeight: 20,
         marginTop: 5,
+        fontSize:15
     },
     image: {
         width: '100%',
